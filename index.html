@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Weather App</title>
+
+      <link rel="stylesheet" href="style.css" />
+      <script src="/node_modules/feather-icons/dist/feather.js"></script>
+   </head>
+   <body>
+      <aside>
+         <div class="search">
+            <button class="search-button"><i data-feather="search"></i></button>
+            <input
+               type="text"
+               placeholder="Rechercher des lieux..."
+               class="search-input"
+            />
+            <button class="locate-button">
+               <i data-feather="map-pin"></i>
+            </button>
+         </div>
+         <div class="summary">
+            <img src="assets/weather-icons/cloudy and rainy.png" alt="" />
+            <p class="temp">12<sup>°C</sup></p>
+            <p></p>
+            <div class="day-hour">
+               <p class="day">Monday, <span class="hour">16:00</span></p>
+            </div>
+         </div>
+         <hr />
+         <div class="details">
+            <p><i data-feather="cloud" class="icon"></i> Mostly Cloudy</p>
+            <p><i data-feather="umbrella" class="icon"></i> Rain - 30%</p>
+         </div>
+         <div class="city">
+            <p>New York, NY, USA</p>
+         </div>
+      </aside>
+      <section>
+         <header>
+            <div class="day-selector">
+               <span>Today</span>
+               <span class="selected-day">Week</span>
+            </div>
+            <div class="unit">
+               <span class="selected-unit">°C</span>
+               <span>°F</span>
+            </div>
+         </header>
+         <article class="week-overview">
+            <div class="day-card">
+               <p>Mon</p>
+               <img
+                  src="assets/weather-icons/sunny.png"
+                  alt=""
+                  class="illustration"
+               />
+               <div class="daytime-temperature">
+                  <span class="max">15°</span>
+                  <span class="min-temp">-3°</span>
+               </div>
+            </div>
+            <div class="day-card">
+               <p>Mon</p>
+               <img
+                  src="assets/weather-icons/sunny.png"
+                  alt=""
+                  class="illustration"
+               />
+               <div class="daytime-temperature">
+                  <span>15°</span>
+                  <span class="min-temp">-3°</span>
+               </div>
+            </div>
+            <div class="day-card">
+               <p>Mon</p>
+               <img
+                  src="assets/weather-icons/sunny.png"
+                  alt=""
+                  class="illustration"
+               />
+               <div class="daytime-temperature">
+                  <span class="max">15°</span>
+                  <span class="min-temp">-3°</span>
+               </div>
+            </div>
+            <div class="day-card">
+               <p>Mon</p>
+               <img
+                  src="assets/weather-icons/sunny.png"
+                  alt=""
+                  class="illustration"
+               />
+               <div class="daytime-temperature">
+                  <span class="max">15°</span>
+                  <span class="min-temp">-3°</span>
+               </div>
+            </div>
+            <div class="day-card">
+               <p>Mon</p>
+               <img
+                  src="assets/weather-icons/sunny.png"
+                  alt=""
+                  class="illustration"
+               />
+               <div class="daytime-temperature">
+                  <span class="max">15°</span>
+                  <span class="min-temp">-3°</span>
+               </div>
+            </div>
+            <div class="day-card">
+               <p>Mon</p>
+               <img
+                  src="assets/weather-icons/sunny.png"
+                  alt=""
+                  class="illustration"
+               />
+               <div class="daytime-temperature">
+                  <span class="max">15°</span>
+                  <span class="min-temp">-3°</span>
+               </div>
+            </div>
+            <div class="day-card">
+               <p>Mon</p>
+               <img
+                  src="assets/weather-icons/sunny.png"
+                  alt=""
+                  class="illustration"
+               />
+               <div class="daytime-temperature">
+                  <span class="max">15°</span>
+                  <span class="min-temp">-3°</span>
+               </div>
+            </div>
+         </article>
+         <article class="today-highlights-container">
+            <h3>Today's highlights</h3>
+            <div class="today-highlights">
+               <div class="card-today">
+                  <p class="card-today-title">UV Index</p>
+               </div>
+               <div class="card-today">
+                  <p class="card-today-title">Wind Status</p>
+                  <p class="wind">0.00 <span>km/h</span></p>
+                  <div class="wind-direction">
+                     <i data-feather="arrow-up-circle"></i><span>SW</span>
+                  </div>
+               </div>
+               <div class="card-today">
+                  <p class="card-today-title">Sunrise & Sunset</p>
+                  <div class="sunrise-sunset">
+                     <div><i data-feather="arrow-up"></i><span>0:00</span></div>
+                     <div>
+                        <i data-feather="arrow-down"></i><span>0:00</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="card-today">
+                  <p class="card-today-title">UV Index</p>
+               </div>
+               <div class="card-today">
+                  <p class="card-today-title">UV Index</p>
+               </div>
+               <div class="card-today">
+                  <p class="card-today-title">UV Index</p>
+               </div>
+            </div>
+         </article>
+      </section>
+
+      <script>
+         feather.icons.search.attrs.width = "20";
+         feather.icons["map-pin"].attrs.width = "20";
+         feather.replace();
+      </script>
+   </body>
+</html>
