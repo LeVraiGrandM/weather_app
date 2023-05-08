@@ -15,6 +15,16 @@ let data = fetch(
 
 function render(data) {
    const temp = document.querySelector(".temp");
+   const day = document.querySelector(".day");
+   const hour = document.querySelector(".hour");
+   let date = new Date();
 
    temp.innerHTML = Math.round(data.current_weather.temperature) + unit;
+   day.innerHTML = getDayName("en-fr") + ",";
+   hour.innerHTML = date.getHours() + ":" + date.getMinutes();
+}
+
+function getDayName(locale) {
+   let date = new Date();
+   return date.toLocaleDateString(locale, { weekday: "long" });
 }
