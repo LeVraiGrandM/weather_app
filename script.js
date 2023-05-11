@@ -2,6 +2,7 @@
 //fetch pour météo de paris => tableau
 //fonction render avec comme paramètre le tableau
 //possibilité de chaanger la localisation avec soit : recherche ou géolocalisation
+import test from "weather_codes.js";
 
 let latitude = 48.85;
 let longitude = 2.34;
@@ -17,14 +18,20 @@ function render(data) {
    const temp = document.querySelector(".temp");
    const day = document.querySelector(".day");
    const hour = document.querySelector(".hour");
-   let date = new Date();
+   let date = convertTZ("Europe/Paris");
 
    temp.innerHTML = Math.round(data.current_weather.temperature) + unit;
    day.innerHTML = getDayName("en-fr") + ",";
-   hour.innerHTML = date.getHours() + ":" + date.getMinutes();
+   hour.innerHTML = date.substring(0, 5);
+}
+
+function convertTZ(tzString) {
+   return new Date().toLocaleTimeString("fr", { timeZone: tzString });
 }
 
 function getDayName(locale) {
    let date = new Date();
    return date.toLocaleDateString(locale, { weekday: "long" });
 }
+
+console.log(test);
