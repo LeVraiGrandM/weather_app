@@ -65,6 +65,26 @@
    },
    "80": {
       "description": "Sligh Rain Shower",
-      "image": "./assets/weather-icons/"
+      "image": "./assets/weather-icons/cloudy_and_rainy.png"
+   },
+   "81": {
+      "description": "Moderate Rain Shower",
+      "image": "./assets/weather-icons/rainy.png"
+   },
+   "82": {
+      "description": "Violent Rain Shower",
+      "image": "./assets/weather-icons/rainy.png"
+   },
+   "95": {
+      "descirption": "Thunderstorm",
+      "image": "./assets/weather-icons/thunderstorm.png"
+   },
+   "96": {
+      "descirption": "Thunderstorm with slight hail",
+      "image": "./assets/weather-icons/thunderstorm_with_rain.png"
+   },
+   "99": {
+      "descirption": "Thunderstorm with heavy hail",
+      "image": "./assets/weather-icons/thunderstorm_with_rain.png"
    }
 }
