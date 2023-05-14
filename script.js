@@ -9,17 +9,13 @@ let city = "Paris";
 let unit = "°C";
 let weather_codes;
 
-fetch("./weather_codes.json")
-   .then((res) => res.json())
-   .then((data) => (weather_codes = data));
-
 let data = fetch(
    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min`
 )
    .then((res) => res.json())
    .then((data) => render(data));
 
-function render(data) {
+async function render(data) {
    const temp = document.querySelector(".temp");
    const day = document.querySelector(".day");
    const hour = document.querySelector(".hour");
@@ -28,6 +24,10 @@ function render(data) {
    const rain = document.querySelector(".rain");
    const weekOverview = document.querySelector(".week-overview");
    let date = convertTZ(data.timezone);
+
+   await fetch("./weather_codes.json")
+      .then((res) => res.json())
+      .then((data) => (weather_codes = data));
 
    temp.innerHTML = Math.round(data.current_weather.temperature) + unit;
    day.innerHTML = getDayName("en-fr") + ",";
