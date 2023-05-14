@@ -5,6 +5,7 @@
 
 let latitude = 48.85;
 let longitude = 2.34;
+let city = "Paris";
 let unit = "°C";
 let weather_codes;
 
@@ -13,7 +14,7 @@ fetch("./weather_codes.json")
    .then((data) => (weather_codes = data));
 
 let data = fetch(
-   `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=Europe/Paris&current_weather=true&daily=weathercode`
+   `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min`
 )
    .then((res) => res.json())
    .then((data) => render(data));
@@ -24,14 +25,40 @@ function render(data) {
    const hour = document.querySelector(".hour");
    const weather_icon = document.querySelector(".weather_icon");
    const description = document.querySelector(".description");
-   let date = convertTZ("Europe/Paris");
+   const rain = document.querySelector(".rain");
+   const weekOverview = document.querySelector(".week-overview");
+   let date = convertTZ(data.timezone);
 
    temp.innerHTML = Math.round(data.current_weather.temperature) + unit;
    day.innerHTML = getDayName("en-fr") + ",";
    hour.innerHTML = date.substring(0, 5);
-   weather_icon.src = weather_codes[data.daily.weathercode[0]].image;
+   weather_icon.src = weather_codes[data.current_weather.weathercode].image;
    description.innerHTML +=
-      weather_codes[data.daily.weathercode[0]].description;
+      weather_codes[data.current_weather.weathercode].description;
+   rain.innerHTML += `Rain - ${data.daily.precipitation_probability_mean[0]}%`;
+
+   for (let i = 0; i < 7; i++) {
+      weekOverview.innerHTML += `<div class="day-card">
+      <p>${new Date(data.daily.time[i]).toLocaleString("en", {
+         weekday: "long",
+      })}</p>
+      <div class="daily-image-container">
+      <img
+        src="${weather_codes[data.daily.weathercode[i]].image}"
+        alt=""
+        class="illustration"
+      />
+      </div>
+      <div class="daytime-temperature">
+        <span class="max">${Math.round(
+           data.daily.temperature_2m_max[i]
+        )}°C</span>
+        <span class="min-temp">${Math.round(
+           data.daily.temperature_2m_min[i]
+        )}°C</span>
+      </div>
+    </div>`;
+   }
 }
 
 function convertTZ(tzString) {

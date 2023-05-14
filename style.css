@@ -217,11 +217,10 @@ header {
 .day-card {
    background-color: #fff;
    display: inline-block;
-   height: min-content;
-   width: min-content;
    text-align: center;
    padding: 20px;
    border-radius: 10px;
+   height: 100%;
 }
 
 .day-card:nth-child(even) {
@@ -229,7 +228,15 @@ header {
 }
 
 .day-card img {
-   width: 90px;
+   width: 100%;
+   object-fit: cover;
+}
+
+.daily-image-container {
+   height: 100px;
+   width: 100px;
+   display: flex;
+   align-items: center;
 }
 
 .min-temp {

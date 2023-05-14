@@ -4,51 +4,51 @@
       "image": "./assets/weather-icons/sunny.png"
    },
    "1": {
-      "descirption": "Mainly Clear",
+      "description": "Mainly Clear",
       "image": "./assets/weather-icons/mainly_clear.png"
    },
    "2": {
-      "descirption": "Partly Cloudy",
+      "description": "Partly Cloudy",
       "image": "./assets/weather-icons/partly_cloudy.png"
    },
    "3": {
-      "descirption": "Overcast",
+      "description": "Overcast",
       "image": "./assets/weather-icons/overcast.png"
    },
    "45": {
-      "descirption": "Fog",
+      "description": "Fog",
       "image": "./assets/weather-icons/overcast.png"
    },
    "48": {
-      "descirption": "Fog",
+      "description": "Fog",
       "image": "./assets/weather-icons/overcast.png"
    },
    "51": {
-      "descirption": "Light Drizzle",
+      "description": "Light Drizzle",
       "image": "./assets/weather-icons/cloudy_and_rainy.png"
    },
    "53": {
-      "descirption": "Moderate Drizzle",
+      "description": "Moderate Drizzle",
       "image": "./assets/weather-icons/rainy.png"
    },
    "55": {
-      "descirption": "Heavy Drizzle",
+      "description": "Heavy Drizzle",
       "image": "./assets/weather-icons/rainy.png"
    },
    "56": {
-      "descirption": "Light Freezing Drizzle",
+      "description": "Light Freezing Drizzle",
       "image": "./assets/weather-icons/cloudy_and_rainy.png"
    },
    "57": {
-      "descirption": "Heavy Freezing Drizzle",
+      "description": "Heavy Freezing Drizzle",
       "image": "./assets/weather-icons/rainy.png"
    },
    "61": {
-      "descirption": "Slight Rain",
+      "description": "Slight Rain",
       "image": "./assets/weather-icons/cloudy_and_rainy.png"
    },
    "63": {
-      "descirption": "Moderate Rain",
+      "description": "Moderate Rain",
       "image": "./assets/weather-icons/rainy.png"
    },
    "65": {
