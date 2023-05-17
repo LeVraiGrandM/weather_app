@@ -1,90 +1,112 @@
 {
    "0": {
       "description": "Clear Sky",
-      "image": "./assets/weather-icons/sunny.png"
+      "image": "-768px -256px",
+      "weekOverview": "-300px -100px"
    },
    "1": {
       "description": "Mainly Clear",
-      "image": "./assets/weather-icons/mainly_clear.png"
+      "image": "-768px -256px",
+      "weekOverview": "-300px -100px"
    },
    "2": {
       "description": "Partly Cloudy",
-      "image": "./assets/weather-icons/partly_cloudy.png"
+      "image": "-512px -256px",
+      "weekOverview": "-200px -100px"
    },
    "3": {
       "description": "Overcast",
-      "image": "./assets/weather-icons/overcast.png"
+      "image": "0 -256px",
+      "weekOverview": "0 -100px"
    },
    "45": {
       "description": "Fog",
-      "image": "./assets/weather-icons/overcast.png"
+      "image": "0 -256px",
+      "weekOverview": "0 -100px"
    },
    "48": {
       "description": "Fog",
-      "image": "./assets/weather-icons/overcast.png"
+      "image": "0 -256px",
+      "weekOverview": "0 -100px"
    },
    "51": {
       "description": "Light Drizzle",
-      "image": "./assets/weather-icons/cloudy_and_rainy.png"
+      "image": "-768px 0",
+      "weekOverview": "-300px 0"
    },
    "53": {
       "description": "Moderate Drizzle",
-      "image": "./assets/weather-icons/rainy.png"
+      "image": "0 0",
+      "weekOverview": "0 0"
    },
    "55": {
       "description": "Heavy Drizzle",
-      "image": "./assets/weather-icons/rainy.png"
+      "image": "0 0",
+      "weekOverview": "0 0"
    },
    "56": {
       "description": "Light Freezing Drizzle",
-      "image": "./assets/weather-icons/cloudy_and_rainy.png"
+      "image": "-768px 0",
+      "weekOverview": "-300px 0"
    },
    "57": {
       "description": "Heavy Freezing Drizzle",
-      "image": "./assets/weather-icons/rainy.png"
+      "image": "0 0",
+      "weekOverview": "0 0"
    },
    "61": {
       "description": "Slight Rain",
-      "image": "./assets/weather-icons/cloudy_and_rainy.png"
+      "image": "-768px 0",
+      "weekOverview": "-300px 0"
    },
    "63": {
       "description": "Moderate Rain",
-      "image": "./assets/weather-icons/rainy.png"
+      "image": "0 0",
+      "weekOverview": "0 0"
    },
    "65": {
       "description": "Heavy Rain",
-      "image": "./assets/weather-icons/rainy.png"
+      "image": "0 0",
+      "weekOverview": "0 0"
    },
    "66": {
       "description": "Light Freezing Rain",
-      "image": "./assets/weather-icons/cloudy_and_rainy.png"
+      "image": "-768px 0",
+      "weekOverview": "-300px 0"
    },
    "67": {
       "description": "Heavy Freezing Rain",
-      "image": "./assets/weather-icons/rainy.png"
+      "image": "0 0",
+      "weekOverview": "0 0"
    },
    "80": {
       "description": "Sligh Rain Shower",
-      "image": "./assets/weather-icons/cloudy_and_rainy.png"
+      "image": "-768px 0",
+      "weekOverview": "-300px 0"
    },
    "81": {
       "description": "Moderate Rain Shower",
-      "image": "./assets/weather-icons/rainy.png"
+      "image": "0 0",
+      "weekOverview": "0 0"
    },
    "82": {
       "description": "Violent Rain Shower",
-      "image": "./assets/weather-icons/rainy.png"
+      "image": "0 0",
+      "weekOverview": "0 0"
    },
    "95": {
       "descirption": "Thunderstorm",
-      "image": "./assets/weather-icons/thunderstorm.png"
+      "image": "-256px -256px",
+      "weekOverview": "-100px -100px"
    },
    "96": {
       "descirption": "Thunderstorm with slight hail",
-      "image": "./assets/weather-icons/thunderstorm_with_rain.png"
+      "image": "-512px 0",
+      "weekOverview": "-200px 0"
    },
    "99": {
       "descirption": "Thunderstorm with heavy hail",
-      "image": "./assets/weather-icons/thunderstorm_with_rain.png"
+      "image": "-512px 0",
+      "weekOverview": "-200px 0"
    }
 }

@@ -97,17 +97,10 @@ aside {
    width: 100%;
 }
 
-.illustration-container {
-   width: 100%;
+.weather-illustration {
+   width: 256px;
    height: 256px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-}
-
-.illustration-container img {
-   width: 80%;
-   object-fit: cover;
+   background: url("assets/weather-icons/weather_icons_sprite.png");
 }
 
 .temp {
@@ -147,7 +140,7 @@ hr {
    line-height: 100px;
    height: 100px;
    width: 90%;
-   background: center/cover url("./assets/new-york.jpg");
+   background: center/cover url("./assets/new-york-min.jpg");
    background-blend-mode: darken;
    border-radius: 15px;
    margin-top: 25px;
@@ -175,7 +168,7 @@ header {
    justify-content: space-between;
 }
 
-.day-selector span {
+.day-selector-container span {
    font-weight: 700;
    margin: 0 20px 0 0;
    color: #c5c5c5;
@@ -235,8 +228,7 @@ header {
 .daily-image-container {
    height: 100px;
    width: 100px;
-   display: flex;
-   align-items: center;
+   background: url("assets/weather-icons/weather_icons_sprite_little.png");
 }
 
 .min-temp {
