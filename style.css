@@ -100,6 +100,8 @@ aside {
 .weather-illustration {
    width: 256px;
    height: 256px;
+   margin-left: 50%;
+   transform: translateX(-50%);
    background: url("assets/weather-icons/weather_icons_sprite.png");
 }
 
@@ -125,7 +127,8 @@ hr {
    margin-bottom: 0px;
 }
 
-.details p {
+.description,
+.rain {
    display: flex;
    align-items: center;
    gap: 10px;
@@ -168,7 +171,7 @@ header {
    justify-content: space-between;
 }
 
-.day-selector-container span {
+.horizontal-navbar span {
    font-weight: 700;
    margin: 0 20px 0 0;
    color: #c5c5c5;
