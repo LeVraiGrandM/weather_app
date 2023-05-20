@@ -278,6 +278,13 @@ header {
    font-size: 0.9rem;
 }
 
+/* uv */
+
+#uv-index-graph {
+   width: 200px;
+   height: 90px;
+}
+
 /* wind */
 
 .wind {

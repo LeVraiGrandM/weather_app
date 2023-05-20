@@ -1,14 +1,9 @@
-//par défaut météo de Paris
-//fetch pour météo de paris => tableau
-//fonction render avec comme paramètre le tableau
-//possibilité de chaanger la localisation avec soit : recherche ou géolocalisation
-
 //state
 let latitude = 48.85;
 let longitude = 2.34;
 let city = "Paris";
 let unit = "°C";
-let selectedDay = "week";
+let selectedDay = "day";
 let daySelector;
 let weekSelector;
 let id = 0;
@@ -23,7 +18,7 @@ async function fetchData() {
       });
 
    let data = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weathercode`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weathercode,uv_index`
    ).then((res) => res.json());
 
    while (data.current_weather.time >= data.hourly.time[id]) {
@@ -31,6 +26,7 @@ async function fetchData() {
    }
    renderAside(data, weatherCodes);
    renderWeekOverview(data, weatherCodes);
+   renderUvComponent(data);
 }
 
 fetchData();
@@ -44,27 +40,25 @@ function getDayName(locale) {
    return date.toLocaleDateString(locale, { weekday: "long" });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-   daySelector = document.querySelector(".day-selector");
-   weekSelector = document.querySelector(".week-selector");
+daySelector = document.querySelector(".day-selector");
+weekSelector = document.querySelector(".week-selector");
 
-   daySelector.addEventListener("click", () => {
-      daySelector.classList.add("selected-day");
-      weekSelector.classList.remove("selected-day");
-      selectedDay = "day";
-      fetchData();
-   });
-   weekSelector.addEventListener("click", () => {
-      daySelector.classList.remove("selected-day");
-      weekSelector.classList.add("selected-day");
-      selectedDay = "week";
-      fetchData();
-   });
+daySelector.addEventListener("click", () => {
+   daySelector.classList.add("selected-day");
+   weekSelector.classList.remove("selected-day");
+   selectedDay = "day";
+   fetchData();
+});
+weekSelector.addEventListener("click", () => {
+   daySelector.classList.remove("selected-day");
+   weekSelector.classList.add("selected-day");
+   selectedDay = "week";
+   fetchData();
 });
 
 //render
 
-async function renderAside(data, weatherCodes) {
+function renderAside(data, weatherCodes) {
    const temp = document.querySelector(".temp");
    const day = document.querySelector(".day");
    const hour = document.querySelector(".hour");
@@ -82,7 +76,7 @@ async function renderAside(data, weatherCodes) {
    rain.innerHTML = `Rain - ${data.daily.precipitation_probability_mean[0]}%`;
 }
 
-async function renderWeekOverview(data, weatherCodes) {
+function renderWeekOverview(data, weatherCodes) {
    const weekOverview = document.querySelector(".week-overview");
 
    if (selectedDay === "week") {
@@ -121,4 +115,26 @@ async function renderWeekOverview(data, weatherCodes) {
          </div>`;
       }
    }
+}
+
+function renderUvComponent(data) {
+   const uvChart = document.getElementById("uv-index-graph");
+   const ctx = uvChart.getContext("2d");
+   ctx.strokeStyle = "#F3F3F4";
+   ctx.beginPath();
+   ctx.arc(uvChart.width / 2, uvChart.height, 110, Math.PI, 0);
+   ctx.lineWidth = 20;
+   ctx.stroke();
+   ctx.strokeStyle = "#ffbf5e";
+   ctx.beginPath();
+   ctx.arc(
+      uvChart.width / 2,
+      uvChart.height,
+      110,
+      Math.PI,
+      Math.PI +
+         ((2 * Math.PI - Math.PI) * (data.hourly.uv_index[id] - 0)) / (12 - 0) //complex calculation which allows to pass from a scale of values from 0 to 12 (index uv returned by the api) to a scale of values from PI to 2*PI (in gradians which is equivalent to a half circle) source: https://stackoverflow.com/questions/12959371/how-to-scale-numbers-values
+   );
+   ctx.lineWidth = 30;
+   ctx.stroke();
 }

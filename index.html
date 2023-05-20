@@ -7,7 +7,6 @@
       <title>Weather App</title>
 
       <link rel="stylesheet" href="style.css" />
-      <script src="script.js"></script>
    </head>
    <body>
       <aside>
@@ -51,8 +50,8 @@
       <section>
          <header>
             <div class="horizontal-navbar">
-               <span class="day-selector">Today</span>
-               <span class="week-selector selected-day">Week</span>
+               <span class="day-selector selected-day">Today</span>
+               <span class="week-selector">Week</span>
             </div>
             <div class="unit">
                <span class="selected-unit">°C</span>
@@ -65,6 +64,7 @@
             <div class="today-highlights">
                <div class="card-today">
                   <p class="card-today-title">UV Index</p>
+                  <canvas id="uv-index-graph"></canvas>
                </div>
                <div class="card-today">
                   <p class="card-today-title">Wind Status</p>
@@ -96,5 +96,7 @@
             </div>
          </article>
       </section>
+
+      <script src="script.js"></script>
    </body>
 </html>
