@@ -133,8 +133,15 @@ function renderUvComponent(data) {
       110,
       Math.PI,
       Math.PI +
-         ((2 * Math.PI - Math.PI) * (data.hourly.uv_index[id] - 0)) / (12 - 0) //complex calculation which allows to pass from a scale of values from 0 to 12 (index uv returned by the api) to a scale of values from PI to 2*PI (in gradians which is equivalent to a half circle) source: https://stackoverflow.com/questions/12959371/how-to-scale-numbers-values
+         ((2 * Math.PI - Math.PI) * (data.hourly.uv_index[id] - 0)) / (15 - 0) //complex calculation which allows to pass from a scale of values from 0 to 12 (index uv returned by the api) to a scale of values from PI to 2*PI (in gradians which is equivalent to a half circle) source: https://stackoverflow.com/questions/12959371/how-to-scale-numbers-values
    );
    ctx.lineWidth = 30;
    ctx.stroke();
+   ctx.font = "bold 40px sans-serif";
+   ctx.textAlign = "center";
+   ctx.fillText(data.hourly.uv_index[id], uvChart.width / 2, uvChart.height);
+   ctx.font = "25px sans-serif";
+   ctx.fillStyle = "#cccccc";
+   ctx.fillText("6", 110, 20);
+   ctx.fillText("12", 270, 70);
 }
