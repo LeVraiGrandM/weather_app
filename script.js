@@ -18,7 +18,7 @@ async function fetchData() {
       });
 
    let data = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weathercode,uv_index`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
    ).then((res) => res.json());
 
    while (data.current_weather.time >= data.hourly.time[id]) {
@@ -27,6 +27,7 @@ async function fetchData() {
    renderAside(data, weatherCodes);
    renderWeekOverview(data, weatherCodes);
    renderUvComponent(data);
+   renderWindComponent(data);
 }
 
 fetchData();
@@ -133,7 +134,7 @@ function renderUvComponent(data) {
       110,
       Math.PI,
       Math.PI +
-         ((2 * Math.PI - Math.PI) * (data.hourly.uv_index[id] - 0)) / (15 - 0) //complex calculation which allows to pass from a scale of values from 0 to 12 (index uv returned by the api) to a scale of values from PI to 2*PI (in gradians which is equivalent to a half circle) source: https://stackoverflow.com/questions/12959371/how-to-scale-numbers-values
+         ((2 * Math.PI - Math.PI) * (data.hourly.uv_index[id] - 0)) / (15 - 0) //complex calculation which allows to pass from a scale of values from 0 to 12 (index uv cardinalPointed by the api) to a scale of values from PI to 2*PI (in gradians which is equivalent to a half circle) source: https://stackoverflow.com/questions/12959371/how-to-scale-windDirections-values
    );
    ctx.lineWidth = 30;
    ctx.stroke();
@@ -144,4 +145,35 @@ function renderUvComponent(data) {
    ctx.fillStyle = "#cccccc";
    ctx.fillText("6", 110, 20);
    ctx.fillText("12", 270, 70);
+}
+
+function renderWindComponent(data) {
+   const windContainer = document.getElementById("wind");
+   let windDirection = data.hourly.winddirection_10m[id];
+   let cardinalPoint;
+
+   if (windDirection >= 22.5 && windDirection < 67.5) {
+      cardinalPoint = "NE";
+   } else if (windDirection >= 67.5 && windDirection < 112.5) {
+      cardinalPoint = "E";
+   } else if (windDirection >= 112.5 && windDirection < 157.5) {
+      cardinalPoint = "SE";
+   } else if (windDirection >= 157.5 && windDirection < 202.5) {
+      cardinalPoint = "S";
+   } else if (windDirection >= 202.5 && windDirection < 247.5) {
+      cardinalPoint = "SO";
+   } else if (windDirection >= 247.5 && windDirection < 292.5) {
+      cardinalPoint = "O";
+   } else if (windDirection >= 292.5 && windDirection < 337) {
+      cardinalPoint = "NO";
+   } else if (windDirection >= 337 || windDirection < 22.5) {
+      cardinalPoint = "N";
+   }
+
+   windContainer.innerHTML = `
+   <p class="card-today-title">Wind Status</p>
+                  <p class="wind">${data.hourly.windspeed_10m[id]}<span> km/h</span></p>
+                  <div class="wind-direction">
+                  <img src="assets/icons/arrow-up-circle.svg" alt="" style="transform: rotate(${data.hourly.winddirection_10m[id]}deg)"/><span>${cardinalPoint}</span>
+                  </div>`;
 }
