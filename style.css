@@ -298,9 +298,15 @@ header {
 
 .wind-direction {
    display: flex;
-   width: 45px;
+   width: 60px;
    justify-content: space-between;
    align-items: center;
+}
+
+.wind-icon {
+   border: 2px solid #cccccc;
+   border-radius: 50%;
+   padding: 3px;
 }
 
 /* sunrise and sunset  */
@@ -308,22 +314,27 @@ header {
 .sunrise-sunset {
    display: flex;
    flex-direction: column;
-   height: 80%;
+   height: 85%;
    justify-content: space-evenly;
 }
 
-.sunrise-sunset svg {
-   background-color: gold;
+.sunrise-sunset img {
+   background: radial-gradient(
+      circle,
+      rgba(255, 222, 73, 1) 0%,
+      rgba(255, 198, 96, 1) 100%
+   );
+   border: 1px solid rgb(253, 188, 76);
    border-radius: 50%;
-   padding: 5px;
-   width: 29px;
-   height: 29px;
+   padding: 7px;
+   /* width: 29px;
+   height: 29px; */
    stroke: #fff;
 }
 
 .sunrise-sunset div {
    display: flex;
    align-items: center;
-   width: 40%;
+   width: 45%;
    justify-content: space-between;
 }

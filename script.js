@@ -18,7 +18,7 @@ async function fetchData() {
       });
 
    let data = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=sunrise,sunset,precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
    ).then((res) => res.json());
 
    while (data.current_weather.time >= data.hourly.time[id]) {
@@ -28,6 +28,7 @@ async function fetchData() {
    renderWeekOverview(data, weatherCodes);
    renderUvComponent(data);
    renderWindComponent(data);
+   renderSunriseSet(data);
 }
 
 fetchData();
@@ -174,6 +175,25 @@ function renderWindComponent(data) {
    <p class="card-today-title">Wind Status</p>
                   <p class="wind">${data.hourly.windspeed_10m[id]}<span> km/h</span></p>
                   <div class="wind-direction">
-                  <img src="assets/icons/arrow-up-circle.svg" alt="" style="transform: rotate(${data.hourly.winddirection_10m[id]}deg)"/><span>${cardinalPoint}</span>
+                  <img src="assets/icons/navigation-2.svg" alt="" style="transform: rotate(${data.hourly.winddirection_10m[id]}deg)" class="wind-icon"/><span>${cardinalPoint}</span>
+                  </div>`;
+}
+
+function renderSunriseSet(data) {
+   const sunriseSetContainer = document.getElementById("sunrise-set");
+
+   sunriseSetContainer.innerHTML = `
+   <p class="card-today-title">Sunrise & Sunset</p>
+                  <div class="sunrise-sunset">
+                     <div>
+                        <img src="assets/icons/arrow-up.svg" alt="" /><span
+                           >${data.daily.sunrise[0].split("T")[1]}</span
+                        >
+                     </div>
+                     <div>
+                        <img src="assets/icons/arrow-down.svg" alt="" /><span
+                           >${data.daily.sunset[0].split("T")[1]}</span
+                        >
+                     </div>
                   </div>`;
 }
