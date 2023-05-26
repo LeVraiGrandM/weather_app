@@ -18,7 +18,7 @@ async function fetchData() {
       });
 
    let data = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=sunrise,sunset,precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=sunrise,sunset,precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=relativehumidity_2m,temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
    ).then((res) => res.json());
 
    while (data.current_weather.time >= data.hourly.time[id]) {
@@ -29,6 +29,7 @@ async function fetchData() {
    renderUvComponent(data);
    renderWindComponent(data);
    renderSunriseSet(data);
+   renderHumidity(data);
 }
 
 fetchData();
@@ -196,4 +197,31 @@ function renderSunriseSet(data) {
                         >
                      </div>
                   </div>`;
+}
+
+function renderHumidity(data) {
+   const humidity = document.getElementById("humidity");
+   let humidityStatus;
+
+   if (data.hourly.relativehumidity_2m[id] < 30) {
+      humidityStatus = "Dry 🥶";
+   } else if (
+      data.hourly.relativehumidity_2m[id] >= 30 &&
+      data.hourly.relativehumidity_2m[id] < 60
+   ) {
+      humidityStatus = "Normal 🤙";
+   } else {
+      humidityStatus = "Humid 😓";
+   }
+
+   humidity.innerHTML = `
+   <p class="card-today-title">Humidity</p>
+                  <p class="humidity-level">${data.hourly.relativehumidity_2m[id]}<sup>%</sup></p>
+                  <p class="humidity-status">${humidityStatus}</p>
+                  <div class="slider-container">
+                     <div class="slider-cursor"></div>
+                  </div>`;
+
+   document.querySelector(".slider-cursor").style.bottom =
+      (data.hourly.relativehumidity_2m[id] * 77) / 100 + "%";
 }

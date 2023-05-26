@@ -338,3 +338,49 @@ header {
    width: 45%;
    justify-content: space-between;
 }
+
+/* humidity */
+
+#humidity {
+   position: relative;
+}
+
+.humidity-level {
+   font-size: 2.5rem;
+   width: 50%;
+   position: absolute;
+   top: 55px;
+}
+
+.humidity-level sup {
+   font-size: 1.2rem;
+}
+
+.humidity-status {
+   width: 50%;
+   bottom: 20px;
+   position: absolute;
+}
+
+.slider-container {
+   width: 20px;
+   height: 80px;
+   border: 2px solid #ccc;
+   border-radius: 10px;
+   position: relative;
+   margin-right: 0;
+   margin-left: auto;
+   margin-top: 10px;
+   position: relative;
+}
+
+.slider-cursor {
+   width: 15px;
+   height: 15px;
+   background: blue;
+   border-radius: 50%;
+   position: absolute;
+   left: 50%;
+   bottom: 77%;
+   transform: translateX(-50%);
+}
