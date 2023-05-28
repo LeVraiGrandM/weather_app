@@ -1,11 +1,7 @@
 //state
-let latitude = 48.85;
-let longitude = 2.34;
 let city = "Paris";
 let unit = "°C";
 let selectedDay = "day";
-let daySelector;
-let weekSelector;
 let id = 0;
 
 //comportement
@@ -18,7 +14,11 @@ async function fetchData() {
       });
 
    let data = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&current_weather=true&daily=sunrise,sunset,precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=relativehumidity_2m,temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
+      `https://api.open-meteo.com/v1/forecast?latitude=${localStorage.getItem(
+         "latitude"
+      )}&longitude=${localStorage.getItem(
+         "longitude"
+      )}&timezone=auto&current_weather=true&daily=sunrise,sunset,precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=visibility,relativehumidity_2m,temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
    ).then((res) => res.json());
 
    while (data.current_weather.time >= data.hourly.time[id]) {
@@ -26,25 +26,22 @@ async function fetchData() {
    }
    renderAside(data, weatherCodes);
    renderWeekOverview(data, weatherCodes);
-   renderUvComponent(data);
-   renderWindComponent(data);
+   renderUv(data);
+   renderWind(data);
    renderSunriseSet(data);
    renderHumidity(data);
+   renderVisibility(data);
 }
 
 fetchData();
-
-function convertTZ(tzString) {
-   return new Date().toLocaleTimeString("fr", { timeZone: tzString });
-}
 
 function getDayName(locale) {
    let date = new Date();
    return date.toLocaleDateString(locale, { weekday: "long" });
 }
 
-daySelector = document.querySelector(".day-selector");
-weekSelector = document.querySelector(".week-selector");
+let daySelector = document.querySelector(".day-selector");
+let weekSelector = document.querySelector(".week-selector");
 
 daySelector.addEventListener("click", () => {
    daySelector.classList.add("selected-day");
@@ -59,6 +56,62 @@ weekSelector.addEventListener("click", () => {
    fetchData();
 });
 
+document.querySelector(".search-input").addEventListener("input", async (e) => {
+   document.querySelector(".search-results").innerHTML = "";
+   if (e.target.value.length >= 3) {
+      document.querySelector(".search-results").style.visibility = "visible";
+      let result = await fetch(
+         `https://geocoding-api.open-meteo.com/v1/search?name=${e.target.value}&count=5&language=en&format=json`
+      )
+         .then((res) => res.json())
+         .then((data) => data.results);
+
+      await result.forEach((element) => {
+         document.querySelector(".search-results").innerHTML += `
+         <div class="result" data-lat="${element.latitude}" data-long="${element.longitude}">
+                  <img src="https://flagsapi.com/${element.country_code}/flat/64.png" alt="" />
+                  <p>${element.name}, ${element.country}</p>
+               </div>
+         `;
+      });
+
+      document.querySelectorAll(".result").forEach((e) => {
+         e.addEventListener("click", () => {
+            localStorage.setItem("latitude", e.dataset.lat);
+            localStorage.setItem("longitude", e.dataset.long);
+            document.querySelector(".search-results").style.visibility =
+               "hidden";
+            fetchData();
+         });
+      });
+   } else {
+      document.querySelector(".search-results").style.visibility = "hidden";
+   }
+});
+
+document.querySelector(".locate-button").addEventListener("click", () => {
+   navigator.geolocation.getCurrentPosition(
+      (pos) => {
+         localStorage.setItem("latitude", pos.coords.latitude);
+         localStorage.setItem("longitude", pos.coords.longitude);
+         fetchData();
+      },
+      (err) => {
+         switch (err.code) {
+            case 1:
+               alert("Error: you have refused access to your position");
+               break;
+            case 2:
+               alert("Error: Unable to access your position");
+               break;
+            default:
+               alert("An error has occurred, please try again.");
+               break;
+         }
+      }
+   );
+});
+
 //render
 
 function renderAside(data, weatherCodes) {
@@ -68,6 +121,7 @@ function renderAside(data, weatherCodes) {
    const weather_icon = document.querySelector(".weather-illustration");
    const description = document.querySelector(".description p");
    const rain = document.querySelector(".rain p");
+   const city = document.querySelector(".city p");
 
    temp.innerHTML = Math.round(data.current_weather.temperature) + unit;
    day.innerHTML = getDayName("en-fr") + ",";
@@ -77,6 +131,16 @@ function renderAside(data, weatherCodes) {
    description.textContent =
       weatherCodes[data.current_weather.weathercode].description;
    rain.innerHTML = `Rain - ${data.daily.precipitation_probability_mean[0]}%`;
+   fetch(
+      `https://geocode.maps.co/reverse?lat=${localStorage.getItem(
+         "latitude"
+      )}&lon=${localStorage.getItem("longitude")}`
+   )
+      .then((res) => res.json())
+      .then(
+         (data) =>
+            (city.innerHTML = data.address.city + ", " + data.address.country)
+      );
 }
 
 function renderWeekOverview(data, weatherCodes) {
@@ -120,9 +184,10 @@ function renderWeekOverview(data, weatherCodes) {
    }
 }
 
-function renderUvComponent(data) {
+function renderUv(data) {
    const uvChart = document.getElementById("uv-index-graph");
    const ctx = uvChart.getContext("2d");
+   ctx.clearRect(0, 0, uvChart.width, uvChart.height);
    ctx.strokeStyle = "#F3F3F4";
    ctx.beginPath();
    ctx.arc(uvChart.width / 2, uvChart.height, 110, Math.PI, 0);
@@ -149,7 +214,7 @@ function renderUvComponent(data) {
    ctx.fillText("12", 270, 70);
 }
 
-function renderWindComponent(data) {
+function renderWind(data) {
    const windContainer = document.getElementById("wind");
    let windDirection = data.hourly.winddirection_10m[id];
    let cardinalPoint;
@@ -224,4 +289,33 @@ function renderHumidity(data) {
 
    document.querySelector(".slider-cursor").style.bottom =
       (data.hourly.relativehumidity_2m[id] * 77) / 100 + "%";
+}
+
+function renderVisibility(data) {
+   const visibility = document.getElementById("visibility");
+   let visibilityStatus;
+
+   if (data.hourly.visibility[id] > 9260) {
+      visibilityStatus = "Good 😀";
+   } else if (
+      data.hourly.visibility[id] <= 9260 &&
+      data.hourly.visibility[id] > 3704
+   ) {
+      visibilityStatus = "Average 😕";
+   } else if (
+      data.hourly.visibility[id] <= 3704 &&
+      data.hourly.visibility[id] > 926
+   ) {
+      visibilityStatus = "Bad 🙁";
+   } else {
+      visibilityStatus = "Very Bad 😖";
+   }
+
+   visibility.innerHTML = `
+   <p class="card-today-title">Visibility</p>
+   <p class="visibility-distance">${
+      data.hourly.visibility[id] / 1000
+   } <span>km</span></p>
+   <p class="visibility-status">${visibilityStatus}</p>
+   `;
 }
