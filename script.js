@@ -6,6 +6,11 @@ let id = 0;
 
 //comportement
 
+if (!localStorage.getItem("visited")) {
+   localStorage.setItem("latitude", 48.85);
+   localStorage.setItem("longitude", 2.34);
+   localStorage.setItem("visited", true);
+}
 async function fetchData() {
    let weatherCodes = await fetch("./weather_codes.json")
       .then((res) => res.json())
@@ -132,9 +137,9 @@ function renderAside(data, weatherCodes) {
       weatherCodes[data.current_weather.weathercode].description;
    rain.innerHTML = `Rain - ${data.daily.precipitation_probability_mean[0]}%`;
    fetch(
-      `https://geocode.maps.co/reverse?lat=${localStorage.getItem(
+      `https://nominatim.openstreetmap.org/reverse?lat=${localStorage.getItem(
          "latitude"
-      )}&lon=${localStorage.getItem("longitude")}`
+      )}&lon=${localStorage.getItem("longitude")}&format=json`
    )
       .then((res) => res.json())
       .then(
@@ -206,6 +211,7 @@ function renderUv(data) {
    ctx.lineWidth = 30;
    ctx.stroke();
    ctx.font = "bold 40px sans-serif";
+   ctx.fontStyle = "#000";
    ctx.textAlign = "center";
    ctx.fillText(data.hourly.uv_index[id], uvChart.width / 2, uvChart.height);
    ctx.font = "25px sans-serif";
