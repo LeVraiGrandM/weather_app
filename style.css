@@ -439,3 +439,19 @@ header {
    position: absolute;
    bottom: 20px;
 }
+
+/*air quality*/
+#air-quality {
+   position: relative;
+}
+
+.air-quality-index {
+   font-size: 2.5rem;
+   position: absolute;
+   top: 55px;
+}
+
+.air-quality-status {
+   bottom: 20px;
+   position: absolute;
+}

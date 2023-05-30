@@ -26,6 +26,12 @@ async function fetchData() {
       )}&timezone=auto&current_weather=true&daily=sunrise,sunset,precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=visibility,relativehumidity_2m,temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
    ).then((res) => res.json());
 
+   let airQuality = await fetch(
+      `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${localStorage.getItem(
+         "latitude"
+      )}&longitude=${localStorage.getItem("longitude")}&hourly=european_aqi`
+   ).then((res) => res.json());
+
    while (data.current_weather.time >= data.hourly.time[id]) {
       id++;
    }
@@ -36,6 +42,7 @@ async function fetchData() {
    renderSunriseSet(data);
    renderHumidity(data);
    renderVisibility(data);
+   renderAirQuality(airQuality);
 }
 
 fetchData();
@@ -290,10 +297,10 @@ function renderHumidity(data) {
                   <p class="humidity-level">${data.hourly.relativehumidity_2m[id]}<sup>%</sup></p>
                   <p class="humidity-status">${humidityStatus}</p>
                   <div class="slider-container">
-                     <div class="slider-cursor"></div>
+                     <div class="slider-cursor slider-humidity"></div>
                   </div>`;
 
-   document.querySelector(".slider-cursor").style.bottom =
+   document.querySelector(".slider-humidity").style.bottom =
       (data.hourly.relativehumidity_2m[id] * 77) / 100 + "%";
 }
 
@@ -324,4 +331,32 @@ function renderVisibility(data) {
    } <span>km</span></p>
    <p class="visibility-status">${visibilityStatus}</p>
    `;
+}
+
+function renderAirQuality(airQuality) {
+   let airQualityStatus;
+
+   if (airQuality.hourly.european_aqi[id] < 20) {
+      airQualityStatus = "Good 👍";
+   } else if (airQuality.hourly.european_aqi[id] < 40) {
+      airQualityStatus = "Fair 😐";
+   } else if (airQuality.hourly.european_aqi[id] < 60) {
+      airQualityStatus = "Moderate 😕";
+   } else if (airQuality.hourly.european_aqi[id] < 80) {
+      airQualityStatus = "Poor 👎";
+   } else {
+      airQualityStatus = "Very Poor 😖";
+   }
+
+   document.getElementById("air-quality").innerHTML = `
+   <p class="card-today-title">Air Quality</p>
+                  <p class="air-quality-index">${airQuality.hourly.european_aqi[id]}</p>
+                  <p class="air-quality-status">${airQualityStatus}</p>
+                  <div class="slider-container">
+                     <div class="slider-cursor slider-air-quality"></div>
+                  </div>
+   `;
+
+   document.querySelector(".slider-air-quality").style.bottom =
+      (airQuality.hourly.european_aqi[id] * 77) / 100 + "%";
 }
