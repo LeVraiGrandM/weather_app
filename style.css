@@ -145,7 +145,7 @@ aside {
 }
 
 .hour {
-   color: #b9b9b9;
+   color: #4c4c4c /*#b9b9b9*/;
 }
 
 hr {
@@ -296,6 +296,8 @@ header {
    grid-template-columns: repeat(3, 1fr);
    grid-template-rows: repeat(2, 1fr);
    gap: 20px;
+   margin-left: 50%;
+   transform: translateX(-50%);
 }
 
 .card-today {

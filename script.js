@@ -360,3 +360,16 @@ function renderAirQuality(airQuality) {
    document.querySelector(".slider-air-quality").style.bottom =
       (airQuality.hourly.european_aqi[id] * 77) / 100 + "%";
 }
+
+//service worker
+
+if ("serviceWorker" in navigator) {
+   navigator.serviceWorker
+      .register("/sw.js")
+      .then((reg) => {
+         console.log("Enregistrement réussi");
+      })
+      .catch((error) => {
+         console.log("Erreur : " + error);
+      });
+}

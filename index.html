@@ -8,14 +8,16 @@
          name="description"
          content="An application that lets you check the weather in any city in the world"
       />
+      <meta name="theme-color" content="#FFC900" />
       <title>Weather</title>
 
       <link rel="stylesheet" href="style.css" />
+      <link rel="manifest" href="manifest.webmanifest" />
    </head>
    <body>
       <aside>
          <div class="search">
-            <button class="search-button">
+            <button class="search-button" aria-label="search">
                <img src="assets/icons/search.svg" alt="" />
             </button>
             <input
@@ -23,7 +25,7 @@
                placeholder="Search for locations..."
                class="search-input"
             />
-            <button class="locate-button">
+            <button class="locate-button" aria-label="geolocation">
                <img src="assets/icons/map-pin.svg" alt="" />
             </button>
             <div class="search-results"></div>
