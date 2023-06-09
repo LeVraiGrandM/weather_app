@@ -1,5 +1,16 @@
-const cacheName = "V9";
-const cacheFiles = ["/assets/no-connection.svg", "/offline.html"];
+const cacheName = "V1";
+const cacheFiles = ["./assets/no-connection.svg", "./offline.html"];
+
+const deleteCache = async (key) => {
+   await caches.delete(key);
+};
+
+const deleteOldCaches = async () => {
+   const cacheKeepList = [cacheName];
+   const keyList = await caches.keys();
+   const cachesToDelete = keyList.filter((key) => !cacheKeepList.includes(key));
+   await Promise.all(cachesToDelete.map(deleteCache));
+};
 
 const cacheResponse = async ({ request, fallbackurl }) => {
    try {
@@ -20,7 +31,7 @@ self.addEventListener("install", async () => {
 });
 
 self.addEventListener("activate", (event) => {
-   event.waitUntil(clients.claim());
+   event.waitUntil(clients.claim(), deleteOldCaches());
 });
 
 self.addEventListener("fetch", async (event) => {
