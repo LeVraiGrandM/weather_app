@@ -27,7 +27,7 @@ self.addEventListener("fetch", async (event) => {
    event.respondWith(
       cacheResponse({
          request: event.request,
-         fallbackurl: "offline.html",
+         fallbackurl: "./offline.html",
       })
    );
 });
