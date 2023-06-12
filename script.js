@@ -1,17 +1,25 @@
 //state
 let city = "Paris";
-let unit = "°C";
+let unit;
+let speedUnit;
 let selectedDay = "day";
 let id = 0;
 
-//comportement
-
+//default city (paris)
 if (!localStorage.getItem("visited")) {
    localStorage.setItem("latitude", 48.85);
    localStorage.setItem("longitude", 2.34);
+   localStorage.setItem("temperature-unit", "celsius");
+   localStorage.setItem("speed-unit", "kmh");
    localStorage.setItem("visited", true);
 }
+
+//fetch data from open meteo
 async function fetchData() {
+   setUnit(
+      localStorage.getItem("temperature-unit"),
+      localStorage.getItem("speed-unit")
+   );
    let weatherCodes = await fetch("./weather_codes.json")
       .then((res) => res.json())
       .catch((e) => {
@@ -23,7 +31,11 @@ async function fetchData() {
          "latitude"
       )}&longitude=${localStorage.getItem(
          "longitude"
-      )}&timezone=auto&current_weather=true&daily=sunrise,sunset,precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=visibility,relativehumidity_2m,temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
+      )}&timezone=auto&temperature_unit=${localStorage.getItem(
+         "temperature-unit"
+      )}&windspeed_unit=${localStorage.getItem(
+         "speed-unit"
+      )}&current_weather=true&daily=sunrise,sunset,precipitation_probability_mean,weathercode,temperature_2m_max,temperature_2m_min&hourly=visibility,relativehumidity_2m,temperature_2m,weathercode,uv_index,windspeed_10m,winddirection_10m`
    ).then((res) => res.json());
 
    let airQuality = await fetch(
@@ -55,12 +67,15 @@ function getDayName(locale) {
 let daySelector = document.querySelector(".day-selector");
 let weekSelector = document.querySelector(".week-selector");
 
+//switch to day view
 daySelector.addEventListener("click", () => {
    daySelector.classList.add("selected-day");
    weekSelector.classList.remove("selected-day");
    selectedDay = "day";
    fetchData();
 });
+
+//switch to week view
 weekSelector.addEventListener("click", () => {
    daySelector.classList.remove("selected-day");
    weekSelector.classList.add("selected-day");
@@ -68,6 +83,46 @@ weekSelector.addEventListener("click", () => {
    fetchData();
 });
 
+//open settings menu
+document.querySelector(".settings-button").addEventListener("click", () => {
+   document.querySelector(".settings").style.visibility = "visible";
+});
+
+//open settings menu
+document.querySelector(".close").addEventListener("click", () => {
+   document.querySelector(".settings").style.visibility = "hidden";
+});
+
+//listens for the value of the "select" tag relative to the temperature unit
+document.getElementById("temperature-unit").addEventListener("input", (e) => {
+   localStorage.setItem("temperature-unit", e.target.value);
+   setUnit(e.target.value, localStorage.getItem("speed-unit"));
+   fetchData();
+});
+
+function setUnit(tempUnit, spedUnit) {
+   if (tempUnit == "celsius") {
+      unit = "°C";
+   } else {
+      unit = "°";
+   }
+   if (spedUnit == "kmh") {
+      speedUnit = "km/h";
+   } else if (spedUnit === "mph") {
+      speedUnit = "mph";
+   } else {
+      speedUnit = "m/s";
+   }
+}
+
+//listens for the value of the "select" tag relative to the temperature unit
+document.getElementById("speed-unit").addEventListener("input", (e) => {
+   localStorage.setItem("speed-unit", e.target.value);
+   setUnit(localStorage.getItem("temperature-unit"), e.target.value);
+   fetchData();
+});
+
+//search
 document.querySelector(".search-input").addEventListener("input", async (e) => {
    document.querySelector(".search-results").innerHTML = "";
    if (e.target.value.length >= 3) {
@@ -101,6 +156,7 @@ document.querySelector(".search-input").addEventListener("input", async (e) => {
    }
 });
 
+//geolocation
 document.querySelector(".locate-button").addEventListener("click", () => {
    navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -171,10 +227,10 @@ function renderWeekOverview(data, weatherCodes) {
             <div class="daytime-temperature">
             <span class="max">${Math.round(
                data.daily.temperature_2m_max[i]
-            )}°C</span>
+            )}${unit}</span>
             <span class="min-temp">${Math.round(
                data.daily.temperature_2m_min[i]
-            )}°C</span>
+            )}${unit}</span>
             </div>
          </div>`;
       }
@@ -189,7 +245,7 @@ function renderWeekOverview(data, weatherCodes) {
             <div class="daytime-temperature">
             <span class="max">${Math.round(
                data.hourly.temperature_2m[i]
-            )}°C</span>
+            )}${unit}</span>
             </div>
          </div>`;
       }
@@ -252,7 +308,7 @@ function renderWind(data) {
 
    windContainer.innerHTML = `
    <p class="card-today-title">Wind Status</p>
-                  <p class="wind">${data.hourly.windspeed_10m[id]}<span> km/h</span></p>
+                  <p class="wind">${data.hourly.windspeed_10m[id]}<span> ${speedUnit}</span></p>
                   <div class="wind-direction">
                   <img src="assets/icons/navigation-2.svg" alt="" style="transform: rotate(${data.hourly.winddirection_10m[id]}deg)" class="wind-icon"/><span>${cardinalPoint}</span>
                   </div>`;

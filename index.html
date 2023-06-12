@@ -8,17 +8,38 @@
          name="description"
          content="An application that lets you check the weather in any city in the world"
       />
-      <meta name="theme-color" content="#FFC900" />
+      <meta name="theme-color" content="#f6f6f8" />
       <title>Weather</title>
 
-      <link rel="stylesheet" href="style.css" />
-      <link rel="manifest" href="manifest.webmanifest" />
+      <link rel="stylesheet" href="./style.css" />
+      <link rel="manifest" href="./manifest.webmanifest" />
    </head>
    <body>
+      <div class="settings">
+         <button class="close">
+            <img src="./assets/icons/x.svg" alt="" />
+         </button>
+         <p class="settings-title">Settings</p>
+         <div class="temperature-unit-container setting">
+            <label for="temperature-unit">Temperature Unit</label>
+            <select name="temp" id="temperature-unit">
+               <option value="celsius">Celcius Degree</option>
+               <option value="fahrenheit">Fahrenheit Degree</option>
+            </select>
+         </div>
+         <div class="speed-unit-container setting">
+            <label for="speed-unit">Speed Unit</label>
+            <select name="speed" id="speed-unit">
+               <option value="kmh">Km/h</option>
+               <option value="mph">Mph</option>
+               <option value="ms">m/s</option>
+            </select>
+         </div>
+      </div>
       <aside>
          <div class="search">
             <button class="search-button" aria-label="search">
-               <img src="assets/icons/search.svg" alt="" />
+               <img src="./assets/icons/search.svg" alt="" />
             </button>
             <input
                type="text"
@@ -26,7 +47,7 @@
                class="search-input"
             />
             <button class="locate-button" aria-label="geolocation">
-               <img src="assets/icons/map-pin.svg" alt="" />
+               <img src="./assets/icons/map-pin.svg" alt="" />
             </button>
             <div class="search-results"></div>
          </div>
@@ -42,11 +63,11 @@
          <hr />
          <div class="details">
             <div class="description">
-               <img src="assets/icons/cloud.svg" alt="" />
+               <img src="./assets/icons/cloud.svg" alt="" />
                <p></p>
             </div>
             <div class="rain">
-               <img src="assets/icons/umbrella.svg" alt="" />
+               <img src="./assets/icons/umbrella.svg" alt="" />
                <p></p>
             </div>
          </div>
@@ -60,9 +81,12 @@
                <span class="day-selector selected-day">Today</span>
                <span class="week-selector">Week</span>
             </div>
-            <div class="unit">
-               <span class="selected-unit">°C</span>
-               <span>°F</span>
+            <div class="settings-button">
+               <img
+                  src="./assets/icons/settings.svg"
+                  alt="settings"
+                  class="settings-icon"
+               />
             </div>
          </header>
          <article class="week-overview"></article>
@@ -82,6 +106,6 @@
          </article>
       </section>
 
-      <script src="script.js"></script>
+      <script src="./script.js"></script>
    </body>
 </html>
