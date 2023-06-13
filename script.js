@@ -86,11 +86,17 @@ weekSelector.addEventListener("click", () => {
 //open settings menu
 document.querySelector(".settings-button").addEventListener("click", () => {
    document.querySelector(".settings").style.visibility = "visible";
+   document.querySelector(".settings").style.transform =
+      "translate(-50%, -50%)";
 });
 
-//open settings menu
+//close settings menu
 document.querySelector(".close").addEventListener("click", () => {
-   document.querySelector(".settings").style.visibility = "hidden";
+   document.querySelector(".settings").style.transform =
+      "translate(-50%, 100%)";
+   window.setTimeout(() => {
+      document.querySelector(".settings").style.visibility = "hidden";
+   }, 300);
 });
 
 //listens for the value of the "select" tag relative to the temperature unit
