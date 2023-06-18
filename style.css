@@ -192,7 +192,7 @@ aside {
    color: #4c4c4c /*#b9b9b9*/;
 }
 
-hr {
+.separation-bar {
    margin: 30px 0;
    border: 1px solid rgb(223, 223, 223);
 }
@@ -289,6 +289,7 @@ header {
    padding: 20px;
    border-radius: 10px;
    height: 100%;
+   cursor: pointer;
 }
 
 .day-card:nth-child(even) {
@@ -309,14 +310,6 @@ header {
 .min-temp {
    color: #c5c5c5;
 }
-
-/* 1480
-@media (max-width: 1530px) {
-   .week-overview {
-      overflow-x: scroll;
-      white-space: nowrap;
-   }
-} */
 
 /*-----------------------------------------------*/
 
@@ -492,4 +485,30 @@ header {
 .air-quality-status {
    bottom: 20px;
    position: absolute;
+}
+
+.box {
+   width: 300px;
+   height: fit-content;
+   background: #e0e0e0;
+   position: absolute;
+   padding: 15px;
+   border-radius: 10px;
+   box-shadow: 0 0 5px 3px #0000002b;
+}
+
+.box-separation-line {
+   margin: 13px 0;
+   border: 1px solid rgb(153, 153, 153);
+}
+
+.box-description {
+   font-size: 1.1rem;
+   font-weight: 600;
+}
+
+.box-details {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
 }

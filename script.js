@@ -4,6 +4,7 @@ let unit;
 let speedUnit;
 let selectedDay = "day";
 let id = 0;
+let isDetailsOpened = false;
 
 //default city (paris)
 if (!localStorage.getItem("visited")) {
@@ -91,7 +92,7 @@ document.querySelector(".settings-button").addEventListener("click", () => {
 });
 
 //close settings menu
-document.querySelector(".close").addEventListener("click", () => {
+document.querySelector(".close-settings").addEventListener("click", () => {
    document.querySelector(".settings").style.transform =
       "translate(-50%, 100%)";
    window.setTimeout(() => {
@@ -186,6 +187,35 @@ document.querySelector(".locate-button").addEventListener("click", () => {
    );
 });
 
+document.addEventListener("click", (e) => {
+   if (
+      (e.target.parentElement.className === "day-card" ||
+         e.target.className === "day-card") &&
+      isDetailsOpened === false
+   ) {
+      let box = document.createElement("div");
+      box.classList.add("box");
+      box.style.top = e.pageY - 120 + "px";
+      if (e.pageX < 300) {
+         box.style.left = 20 + "px";
+      } else if (e.pageX > window.innerWidth - 200) {
+         box.style.right = 20 + "px";
+      } else {
+         box.style.left = e.pageX - 150 + "px";
+      } // these conditions ensure that the popup does not protrude to the right or left for optimal display
+      isDetailsOpened = true;
+      renderSettings(e.target).then((data) => {
+         box.innerHTML = data;
+      });
+      document.body.appendChild(box);
+   } else if (e.target.parentElement.classList[1] === "close-details") {
+      isDetailsOpened = false;
+      document.body.removeChild(document.querySelector(".box"));
+   }
+});
+
+//close details
+
 //render
 
 function renderAside(data, weatherCodes) {
@@ -223,14 +253,14 @@ function renderWeekOverview(data, weatherCodes) {
    if (selectedDay === "week") {
       weekOverview.innerHTML = "";
       for (let i = 0; i < 7; i++) {
-         weekOverview.innerHTML += `<div class="day-card">
+         weekOverview.innerHTML += `<div class="day-card" data-index="${i}">
             <p>${new Date(data.daily.time[i]).toLocaleString("en", {
                weekday: "long",
             })}</p>
             <div class="daily-image-container" style="background-position: ${
                weatherCodes[data.daily.weathercode[i]].weekOverview
-            }"></div>
-            <div class="daytime-temperature">
+            }" data-index="${i}"></div>
+            <div class="daytime-temperature" data-index="${i}">
             <span class="max">${Math.round(
                data.daily.temperature_2m_max[i]
             )}${unit}</span>
@@ -243,12 +273,12 @@ function renderWeekOverview(data, weatherCodes) {
    } else {
       weekOverview.innerHTML = "";
       for (let i = id; i < id + 10; i++) {
-         weekOverview.innerHTML += `<div class="day-card">
-            <p>${data.hourly.time[i].split("T")[1]}</p>
-            <div class="daily-image-container" style="background-position: ${
-               weatherCodes[data.hourly.weathercode[i]].weekOverview
-            }"></div>
-            <div class="daytime-temperature">
+         weekOverview.innerHTML += `<div class="day-card" data-index="${i}">
+            <p data-index="${i}">${data.hourly.time[i].split("T")[1]}</p>
+            <div class="daily-image-container" data-index="${i}"style="background-position: ${
+            weatherCodes[data.hourly.weathercode[i]].weekOverview
+         }"></div>
+            <div class="daytime-temperature" data-index="${i}">
             <span class="max">${Math.round(
                data.hourly.temperature_2m[i]
             )}${unit}</span>
@@ -423,6 +453,85 @@ function renderAirQuality(airQuality) {
       (airQuality.hourly.european_aqi[id] * 77) / 100 + "%";
 }
 
+async function renderSettings(element) {
+   let data = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${localStorage.getItem(
+         "latitude"
+      )}&longitude=${localStorage.getItem(
+         "longitude"
+      )}&temperature_unit=${localStorage.getItem(
+         "temperature-unit"
+      )}&windspeed_unit=${localStorage.getItem(
+         "speed-unit"
+      )}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,windspeed_10m&daily=weathercode,temperature_2m_max,apparent_temperature_max,precipitation_sum,windspeed_10m_max&timezone=auto`
+   ).then((res) => res.json());
+
+   let weatherCodes = await fetch("./weather_codes.json")
+      .then((res) => res.json())
+      .catch((e) => {
+         new Error(e);
+      });
+
+   let precipitationDescription;
+
+   if (data.hourly.precipitation[element.dataset.index] === 0) {
+      precipitationDescription = "No precipation excepted";
+   } else {
+      precipitationDescription =
+         "Precipitation is expected (" +
+         data.hourly.precipitation[element.dataset.index] +
+         "mm)";
+   }
+   if (selectedDay === "day") {
+      return `<p class="box-description">${
+         weatherCodes[data.hourly.weathercode[element.dataset.index]]
+            .description
+      }</p>
+   <hr class="box-separation-line" />
+   <div class="box-details">
+      <p>Temperature : <strong>${
+         data.hourly.temperature_2m[element.dataset.index]
+      }°C</strong></p>
+      <p>Humidity : <strong>${
+         data.hourly.relativehumidity_2m[element.dataset.index]
+      }%</strong></p>
+      <p>Wind Speed : <strong>${
+         data.hourly.windspeed_10m[element.dataset.index]
+      }km/h</strong></p>
+   </div>
+   <hr class="box-separation-line" />
+   <p>The perceived temperature is <strong>${
+      data.hourly.apparent_temperature[element.dataset.index]
+   }</strong></p>
+   <hr class="box-separation-line" />
+   <p>${precipitationDescription}</p>
+   <button class="close close-details">
+            <img src="./assets/icons/x.svg" alt="" />
+         </button>`;
+   } else {
+      return `<p class="box-description">${
+         weatherCodes[data.daily.weathercode[element.dataset.index]].description
+      }</p>
+   <hr class="box-separation-line" />
+   <div class="box-details">
+      <p>Max Temperature : <strong>${
+         data.daily.temperature_2m_max[element.dataset.index]
+      }°C</strong></p>
+      <p>Max Wind Speed : <strong>${
+         data.daily.windspeed_10m_max[element.dataset.index]
+      }km/h</strong></p>
+   </div>
+   <hr class="box-separation-line" />
+   <p>The maximum perceived temperature is <strong>${
+      data.daily.apparent_temperature_max[element.dataset.index]
+   }</strong></p>
+   <hr class="box-separation-line" />
+   <p>${precipitationDescription}</p>
+   <button class="close close-details">
+            <img src="./assets/icons/x.svg" alt="" />
+         </button>`;
+   }
+}
 //service worker
 
 if ("serviceWorker" in navigator) {

@@ -95,17 +95,17 @@
       "weekOverview": "0 0"
    },
    "95": {
-      "descirption": "Thunderstorm",
+      "description": "Thunderstorm",
       "image": "-256px -256px",
       "weekOverview": "-100px -100px"
    },
    "96": {
-      "descirption": "Thunderstorm with slight hail",
+      "description": "Thunderstorm with slight hail",
       "image": "-512px 0",
       "weekOverview": "-200px 0"
    },
    "99": {
-      "descirption": "Thunderstorm with heavy hail",
+      "description": "Thunderstorm with heavy hail",
       "image": "-512px 0",
       "weekOverview": "-200px 0"
    }
